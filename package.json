@@ -1,0 +1,19 @@
+{
+  "name": "fileservice",
+  "version": "1.0.0",
+  "description": "File service lambda function supporting upload/download of STL model files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EasyMeshVR/FileService.git"
+  },
+  "author": "EasyMeshVR",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EasyMeshVR/FileService/issues"
+  },
+  "homepage": "https://github.com/EasyMeshVR/FileService#readme"
+}
