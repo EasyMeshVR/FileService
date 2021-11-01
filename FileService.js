@@ -25,7 +25,7 @@ class FileService {
         try {
             const response = await this.#s3Client.send(command);
         } catch (err) {
-            console.log(error);
+            console.log(err);
             response.statusCode = 500;
             return;
         }
