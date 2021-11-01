@@ -30,6 +30,7 @@ jobs:
         touch .env
         echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
         echo BUCKET_NAME=${{ secrets.BUCKET_NAME }} >> .env
+        ls -la
       
     - run: npm ci
     - run: npm run build --if-present
