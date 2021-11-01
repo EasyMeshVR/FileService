@@ -2,7 +2,13 @@ const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-na
 const { S3Client, GetObjectCommand, PutObjectCommand } = require("@aws-sdk/client-s3");
 
 class FileService {
-    static #s3Client = new S3Client({ region: process.env.AWS_REGION });
+    static #s3Client = new S3Client({
+        credentials: {
+            AccessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            SecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+        },
+        region: process.env.AWS_REGION 
+    });
 
 	static #generateCode() {
         const nameCode = uniqueNamesGenerator({
