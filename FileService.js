@@ -21,11 +21,14 @@ class FileService {
     static async upload(response) {
         const nameCode = this.#generateCode();
 
+        console.log(nameCode);
+
         const command = new PutObjectCommand({
             Bucket: process.env.BUCKET_NAME,
             Key: nameCode,
-            ContentType: "model/stl",
-            Body: "This is a test of file uploading"
+            //ContentType: "model/stl",
+            Body: nameCode,
+            ContentLength: nameCode.length()
         });
 
         try {
