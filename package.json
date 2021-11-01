@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/EasyMeshVR/FileService/issues"
   },
-  "homepage": "https://github.com/EasyMeshVR/FileService#readme"
+  "homepage": "https://github.com/EasyMeshVR/FileService#readme",
+  "dependencies": {
+    "jest": "^27.3.1"
+  }
 }
