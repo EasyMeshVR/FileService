@@ -28,7 +28,7 @@ class FileService {
             Key: nameCode,
             //ContentType: "model/stl",
             Body: nameCode,
-            ContentLength: nameCode.length()
+            ContentLength: nameCode.length
         });
 
         try {
