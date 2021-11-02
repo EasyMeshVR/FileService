@@ -4,8 +4,8 @@ const { S3Client, GetObjectCommand, PutObjectCommand } = require("@aws-sdk/clien
 class FileService {
     static #s3Client = new S3Client({
         credentials: {
-            AccessKeyId: process.env.AWS_ACCESS_KEY_ID,
-            SecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
         },
         region: process.env.AWS_REGION 
     });
@@ -21,14 +21,11 @@ class FileService {
     static async upload(response) {
         const nameCode = this.#generateCode();
 
-        console.log(nameCode);
-
         const command = new PutObjectCommand({
             Bucket: process.env.BUCKET_NAME,
             Key: nameCode,
             //ContentType: "model/stl",
-            Body: nameCode,
-            ContentLength: nameCode.length
+            //Body: "test",
         });
 
         try {
@@ -47,6 +44,20 @@ class FileService {
     }
     
     static async download(response) {
+        const command = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: "hungry_red_cat"
+        });
+
+        try {
+            const response = await this.#s3Client.send(command);
+            console.log(response);
+        } catch (err) {
+            console.log(err);
+            response.statusCode = 500;
+            return;
+        }
+
         response.body = JSON.stringify("Downloaded file!");
     }
 }
