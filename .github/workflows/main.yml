@@ -27,9 +27,7 @@ jobs:
         touch .env
         echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
         echo BUCKET_NAME=${{ secrets.BUCKET_NAME }} >> .env
-        echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env
-        echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
-      
+
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
