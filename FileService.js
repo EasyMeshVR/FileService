@@ -43,33 +43,29 @@ class FileService {
         });
     }
 
-    static async requestPresignedPost(requestBody, response) {
-        console.log(requestBody);
-    }
-
-    static async upload(response) {
+    static async requestPresignedPost(request, response) {
         const nameCode = this.#generateCode();
 
-        const command = new PutObjectCommand({
+        const params = {
             Bucket: process.env.BUCKET_NAME,
             Key: nameCode,
-            //ContentType: "model/stl",
-            //Body: "test",
-        });
+            Conditions: [
+             ['content-length-range', 0, 1e8], // 100 MB file limit
+             ['eq', '$Content-Type', 'model/stl']
+            ]
+        };
+
+        let commandResult;
 
         try {
-            const response = await this.#s3Client.send(command);
+            commandResult = await createPresignedPost(this.#s3Client, params);
         } catch (err) {
             console.log(err);
             response.statusCode = 500;
             return;
         }
 
-        const body = {
-           code: nameCode 
-        };
-
-        response.body = JSON.stringify(body);
+        console.log(commandResult);
     }
 }
 

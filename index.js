@@ -14,7 +14,7 @@ exports.handler = async (event) => {
                 await FileService.requestPresignedGet(event.queryStringParameters, response);
                 break;
             case "POST":
-                await FileService.requestPresignedPost(JSON.parse(event.body), response);
+                await FileService.requestPresignedPost(event, response);
                 break;
             default:
                 // Unsupported method
