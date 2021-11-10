@@ -16,8 +16,8 @@ class FileService {
         return nameCode;
 	}
 
-    static async requestPresignedGet(request, response) {
-        const nameCode = request.body.nameCode;
+    static async requestPresignedGet(params, response) {
+        const nameCode = params.nameCode;
 
         console.log('nameCode received: ', nameCode);
 
@@ -43,8 +43,8 @@ class FileService {
         });
     }
 
-    static async requestPresignedPost(request, response) {
-        console.log('TODO');
+    static async requestPresignedPost(requestBody, response) {
+        console.log(requestBody);
     }
 
     static async upload(response) {

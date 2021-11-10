@@ -11,10 +11,10 @@ exports.handler = async (event) => {
     if (event.requestContext && event.requestContext.http && event.requestContext.http.method) {
         switch (event.requestContext.http.method) {
             case "GET":
-                await FileService.requestPresignedGet(event.requestContext, response);
+                await FileService.requestPresignedGet(event.queryStringParameters, response);
                 break;
             case "POST":
-                await FileService.requestPresignedPost(event.requestContext, response);
+                await FileService.requestPresignedPost(JSON.parse(event.body), response);
                 break;
             default:
                 // Unsupported method
