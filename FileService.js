@@ -1,5 +1,7 @@
 const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
-const { S3Client, GetObjectCommand, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, GetObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
+const { createPresignedPost } = require('@aws-sdk/s3-presigned-post');
 
 class FileService {
     static #s3Client = new S3Client({
@@ -13,6 +15,37 @@ class FileService {
 
         return nameCode;
 	}
+
+    static async requestPresignedGet(request, response) {
+        const nameCode = request.body.nameCode;
+
+        console.log('nameCode received: ', nameCode);
+
+        const getCommand = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: nameCode
+        });
+
+        let commandResult;
+
+        try {
+            commandResult = await getSignedUrl(this.#s3Client, getCommand);
+        } catch (err) {
+            console.log(err);
+            response.statusCode = 500;
+            return;
+        }
+
+        console.log(commandResult);
+
+        response.body = JSON.stringify({
+            url: commandResult
+        });
+    }
+
+    static async requestPresignedPost(request, response) {
+        console.log('TODO');
+    }
 
     static async upload(response) {
         const nameCode = this.#generateCode();
@@ -37,24 +70,6 @@ class FileService {
         };
 
         response.body = JSON.stringify(body);
-    }
-    
-    static async download(response) {
-        const command = new GetObjectCommand({
-            Bucket: process.env.BUCKET_NAME,
-            Key: "hungry_red_cat"
-        });
-
-        try {
-            const response = await this.#s3Client.send(command);
-            console.log(response);
-        } catch (err) {
-            console.log(err);
-            response.statusCode = 500;
-            return;
-        }
-
-        response.body = JSON.stringify("Downloaded file!");
     }
 }
 
