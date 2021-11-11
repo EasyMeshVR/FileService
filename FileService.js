@@ -65,10 +65,9 @@ class FileService {
             return;
         }
 
-        console.log(commandResult);
-
         response.body = JSON.stringify({
-            nameCode: nameCode
+            nameCode: nameCode,
+            data: commandResult
         });
     }
 }
