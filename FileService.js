@@ -51,7 +51,7 @@ class FileService {
             Key: nameCode,
             Conditions: [
              ['content-length-range', 0, 1e8], // 100 MB file limit
-             ['eq', '$Content-Type', 'model/stl']
+             //['eq', '$Content-Type', 'model/stl']
             ]
         };
 
