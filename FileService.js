@@ -8,13 +8,13 @@ class FileService {
         region: process.env.AWS_REGION 
     });
 
-	static #generateCode() {
+    static #generateCode() {
         const nameCode = uniqueNamesGenerator({
           dictionaries: [colors, adjectives, animals],
         });	
 
         return nameCode;
-	}
+    }
 
     static async requestPresignedGet(params, response) {
         const nameCode = params.nameCode;
@@ -66,6 +66,10 @@ class FileService {
         }
 
         console.log(commandResult);
+
+        response.body = JSON.stringify({
+            nameCode: nameCode
+        });
     }
 }
 
