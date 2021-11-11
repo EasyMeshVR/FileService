@@ -11,6 +11,7 @@ class FileService {
     static #generateCode() {
         const nameCode = uniqueNamesGenerator({
           dictionaries: [colors, adjectives, animals],
+          separator: '-'
         });	
 
         return nameCode;
@@ -23,7 +24,7 @@ class FileService {
 
         const getCommand = new GetObjectCommand({
             Bucket: process.env.BUCKET_NAME,
-            Key: nameCode
+            Key: nameCode + ".stl"
         });
 
         let commandResult;
@@ -48,7 +49,7 @@ class FileService {
 
         const params = {
             Bucket: process.env.BUCKET_NAME,
-            Key: nameCode,
+            Key: nameCode + ".stl",
             Conditions: [
              ['content-length-range', 0, 1e8], // 100 MB file limit
              //['eq', '$Content-Type', 'model/stl']
