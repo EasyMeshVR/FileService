@@ -3,7 +3,10 @@ const FileService = require("./FileService.js");
 
 exports.handler = async (event) => {
     const response = {
-        statusCode: 200
+        statusCode: 200,
+        headers: {
+            "content-type": "application/json"
+        }
     };
 
     console.log(event);
