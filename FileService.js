@@ -1,5 +1,5 @@
 const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
-const { S3Client, GetObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
 const { createPresignedPost } = require('@aws-sdk/s3-presigned-post');
 
@@ -20,24 +20,24 @@ class FileService {
     static async requestPresignedGet(params, response) {
         const nameCode = params.nameCode;
 
-        console.log('nameCode received: ', nameCode);
-
         const getCommand = new GetObjectCommand({
             Bucket: process.env.BUCKET_NAME,
             Key: nameCode + ".stl"
         });
 
+        const options = {
+            expiresIn: 300 // 5 minute expiration time
+        };
+
         let commandResult;
 
         try {
-            commandResult = await getSignedUrl(this.#s3Client, getCommand);
+            commandResult = await getSignedUrl(this.#s3Client, getCommand, options);
         } catch (err) {
             console.log(err);
             response.statusCode = 500;
             return;
         }
-
-        console.log(commandResult);
 
         response.body = JSON.stringify({
             url: commandResult
@@ -51,9 +51,9 @@ class FileService {
             Bucket: process.env.BUCKET_NAME,
             Key: nameCode + ".stl",
             Conditions: [
-             ['content-length-range', 0, 1e8], // 100 MB file limit
-             //['eq', '$Content-Type', 'model/stl']
-            ]
+             ['content-length-range', 0, 1e8] // 100 MB file limit
+            ],
+            Expires: 300 // 5 minute expiration time
         };
 
         let commandResult;
