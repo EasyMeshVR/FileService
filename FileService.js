@@ -77,10 +77,14 @@ class FileService {
     }
 
     static async requestPresignedPost(request, response) {
-        const body = request.body;
+        let body;
 
-        console.log(request);
-        console.log(body);
+        try {
+            body = JSON.parse(request.body);
+        } catch (error) {
+            response.statusCode = 400;
+            return response;
+        }
 
         if (!body || (body.codeType !== this.#DIGIT_CODE_TYPE && body.codeType !== this.#WORD_CODE_TYPE)) {
             response.statusCode = 400;
