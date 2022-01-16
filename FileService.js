@@ -34,7 +34,7 @@ class FileService {
     }
 
     static async requestPresignedGet(params, response) {
-        const code = params.code;
+        let code = params.code;
         
         if (code.matches(this.#DIGIT_CODE_REGEX)) {
             code = this.#DIGIT_CODE_FILE_DIR + code;
@@ -79,11 +79,12 @@ class FileService {
             return response;
         }
 
+        const dir = (body.codeType === this.#DIGIT_CODE_TYPE) ? this.#DIGIT_CODE_FILE_DIR : this.#WORD_CODE_FILE_DIR;
         const code = this.#generateCode(body.codeType);
 
         const params = {
             Bucket: process.env.BUCKET_NAME,
-            Key: code + ".stl",
+            Key: dir + code + ".stl",
             Conditions: [
              ['content-length-range', 0, 1e8] // 100 MB file limit
             ],
