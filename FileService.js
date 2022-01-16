@@ -34,12 +34,17 @@ class FileService {
     }
 
     static async requestPresignedGet(params, response) {
+        if (!params || !params.code) {
+            response.statusCode = 400;
+            return response;
+        }
+
         let code = params.code;
         
-        if (code.matches(this.#DIGIT_CODE_REGEX)) {
+        if (code.match(this.#DIGIT_CODE_REGEX)) {
             code = this.#DIGIT_CODE_FILE_DIR + code;
         }
-        else if (code.matches(this.#WORD_CODE_REGEX)) {
+        else if (code.match(this.#WORD_CODE_REGEX)) {
             code = this.#WORD_CODE_FILE_DIR + code;
         }
         else {
