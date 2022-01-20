@@ -86,13 +86,23 @@ class FileService {
             return response;
         }
 
-        if (!body || (body.codeType !== this.#DIGIT_CODE_TYPE && body.codeType !== this.#WORD_CODE_TYPE)) {
+
+        let codeType;
+
+        try {
+            codeType = body.codeType.toLowerCase();
+        } catch (error) {
             response.statusCode = 400;
             return response;
         }
 
-        const dir = (body.codeType === this.#DIGIT_CODE_TYPE) ? this.#DIGIT_CODE_FILE_DIR : this.#WORD_CODE_FILE_DIR;
-        const code = this.#generateCode(body.codeType);
+        if (codeType !== this.#DIGIT_CODE_TYPE && codeType !== this.#WORD_CODE_TYPE) {
+            response.statusCode = 400;
+            return response;
+        }
+
+        const dir = (codeType === this.#DIGIT_CODE_TYPE) ? this.#DIGIT_CODE_FILE_DIR : this.#WORD_CODE_FILE_DIR;
+        const code = this.#generateCode(codeType);
 
         const params = {
             Bucket: process.env.BUCKET_NAME,
